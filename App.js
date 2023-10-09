@@ -1,16 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { gStyle } from './styles/style';
+import { StyleSheet } from "react-native";
+import { gStyle } from "./styles/style";
+import * as Font from "expo-font";
+import React, { useState } from "react";
+import AppLoading from "expo-app-loading";
+import Main from './components/main';
+
+const fonts = () =>
+  Font.loadAsync({
+    "mt-bold": require("./assets/fonts/YoungSerif-Regular.ttf"),
+    "mt-light": require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
+  });
 
 export default function App() {
-  return (
-    <View style={gStyle.main}>
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-    </View>
+  const handleLoadingError = (error) => {
+    console.warn(error);
+  };
 
-  ); 
+  if (fontLoaded) {
+    return (
+     <Main />
+    );
+  } else {
+    return (
+      <AppLoading
+        startAsync={fonts}
+        onFinish={() => setFontLoaded(true)}
+        onError={handleLoadingError}
+      />
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
